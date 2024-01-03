@@ -32,7 +32,26 @@ ViewAccomodations gives an overview of all accomodations.
 removeAccomodations removes an accomodation entirely from the list. It is not simply removing the entire accomodation 
 from the application.
 
-The Main function is simply a debugger. It does nothing exceptional save for trying out the various methods.
+There is then a parent- or super class called UserClass. Everyone that is using the system is either a Host or a Renter we have two children classes called HostClass and RenterClass.
 
+UserClass is the super class of the two different Users and takes in simple information such as name, password and account type. UserClass has three methods which are update_details, update_user_profile and a tiny view_profile. The update_user_profile is responsible for retrieving information from either a renter or host, and this method is reliant on update_details that actually store the new information. The third methods is only responsible for printing and is extremely simple.
+
+The HostClass has access to another variable called bank_details that is meant to act as a security measure if the system was more developed, it also features host-id that is used to attach an accommodation to a specific host. Also has a small print to also be able to print the host-id when using the methods in UserClass view_profile(self).
+
+The RenterClass has access to a similar variable called renter-id that is supposed to attach that renters id to their requests. 
+requestAccommodation is responsible for allowing a user to send a request to a particular property, if a request already exist from that user to the accomodation then try again.
+Same tiny view_profile(self) which works the same as for Host and allows the UserClass function to also print the Renters ID.
+
+viewRequests is responsible for showing all the current requests to the renter that has issued them.
+
+Then we have two pre_existing_host/renter that is a simple version of two different users that can be used to access the basics of the system however making your own account is advised.
+
+create_account is responsible allowing a user to create their own account and put in necessary information like name and password but also their account type which is important for the functionality of the system.
+When prompted with enough information it creates either a host or renter account depending on the inputted account_type.
+
+login is responsible for allowing a user to access the rest of the system by checking if a there is a matching account in the user_database.
+
+The Main function is simply a debugger. It does nothing exceptional save for trying out the various methods.
+There are also a couple of example accommodations that way we dont always have to create new ones to try the functionalies.
 
 
