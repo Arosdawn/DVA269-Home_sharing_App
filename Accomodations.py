@@ -75,23 +75,27 @@ class AccommodationClass:
             return "No Available Dates"
         return availability_weeks
 
-    def set_availability(self, name, weeks):
+    def set_availability(self, name, weeks, method="add"):
         """ Sets the availability of an accomodation, and changes it accordingly in the list. """
         name = name.lower()
+        if method.lower() == "remove":
+            method = None
+        elif method.lower() == "add":
+            method = False
         Accomodation = self.findAccommodation(name)
         try:
             for ind, av in enumerate(Accomodation[name]['Availability']):
                 if ind+1 == int(weeks):
-                    if av == None or av == False:
-                        Accomodation[name]["Availability"][ind] = False
+                    if av != method:
+                        Accomodation[name]["Availability"][ind] = method
                         return
         except:
             week_span = weeks.strip(' ')
             start_week, end_week = map(int, week_span.split('-'))
             weeks_list = list(range(start_week, end_week + 1))
             for week in weeks_list:
-                if Accomodation[name]["Availability"][week] != True:
-                    Accomodation[name]["Availability"][week] = False
+                if Accomodation[name]["Availability"][week] != method:
+                    Accomodation[name]["Availability"][week] = method
 
     def findAccommodation(self, name):
         """ Searches for an accomodation with the name """
@@ -127,8 +131,14 @@ class AccommodationClass:
 
             change = input("What to change? > ").capitalize()
             if change.lower() == 'availability':
-                weeks = input("What weeks? > ")
-                self.set_availability(name, weeks)
+                while True:
+                    method = input("Remove or add availability? > ").lower()
+                    if method.lower().strip(' ') == "add" or method.lower().strip(' ') == 'remove':
+                        weeks = input("What weeks? > ")
+                        self.set_availability(name, weeks, method)
+                        return
+                    else:
+                        print("Type only [remove] or [add].")
             else:
                 new_value = input("New " + change + " > ").capitalize()
 
@@ -156,7 +166,7 @@ class AccommodationClass:
 
 
 def Main():
-    # Example usage:
+    # Examples:
     accommodation_instance = AccommodationClass()
     accommodation_instance.publish("House 34b", "Köln", 34, "apartment", 10, 1, 3, "None", "30-31",  "None")
     print(accommodation_instance.totalAccommodations)
