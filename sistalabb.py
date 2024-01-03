@@ -355,6 +355,8 @@ def main_menu(accommodation_instance):
 
             if logged_in_user:
 
+                user_instance = user_database.get(logged_in_user)
+
                 while True:
                     print(f"Logged in as: {logged_in_user}")
                     print("1. View Profile")
