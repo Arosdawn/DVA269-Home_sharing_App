@@ -115,7 +115,6 @@ class AccommodationClass:
 
     totalAccommodations = 0
 
-
     def publish(self, name, location, size, AccommodationType, price, floor, rooms, otherFeatures, host=None):
         self.name = name
         self.AccommodationID = name
@@ -191,6 +190,7 @@ class AccommodationClass:
         for index, accommodation in enumerate(allAccommodations):
             if name in accommodation:
                 del allAccommodations[index]
+                print("Accommodation removed successfully")
                 return
         print("This accommodation does not exist.")
 
@@ -250,19 +250,21 @@ def main_menu():
 
             if logged_in_user:
 
+                user_instance = user_database.get(logged_in_user)
+
                 while True:
                     print(f"Logged in as: {logged_in_user}")
                     print("1. View Profile")
                     print("2. View Accommodations")
                     print("3. Edit Accomodation")
-                    print("4. View requests")
-                    print("5. Request Accommodation")
-                    print("6. Update Profile")
-                    print("7. Log out")
-                    option = input("Your choice (1-7): ")
+                    print("4. Remove Accomodation")
+                    print("5. View requests")
+                    print("6. Request Accommodation")
+                    print("7. Update Profile")
+                    print("8. Log out")
+                    option = input("Your choice (1-8): ")
 
                     if option == "1":
-                        user_instance = user_database.get(logged_in_user)
                         user_instance.view_profile()
 
                     elif option == "2":
@@ -270,8 +272,6 @@ def main_menu():
                         accommodation_instance.viewAccommodations()
 
                     elif option == "3":
-
-                        user_instance = user_database.get(logged_in_user)
 
                         if isinstance(user_instance, HostClass):
 
@@ -282,7 +282,16 @@ def main_menu():
                             accommodation_instance.editAccommodation(editAccommodation)
 
                     elif option == '4':
-                        user_instance = user_database.get(logged_in_user)
+
+                        if isinstance(user_instance, HostClass):
+                            accommodation_instance = AccommodationClass()
+                            accommodation_instance.viewAccommodations()
+                            removeAccommodation = input("Enter name of accommodation to remove > ").capitalize()
+
+                            accommodation_instance.removeAccommodation(removeAccommodation)
+
+
+                    elif option == '5':
 
                         if isinstance(user_instance, RenterClass):
 
@@ -290,26 +299,26 @@ def main_menu():
                         else:
                             print("Not renter")
 
-                    elif option == '5':
-                        user_instance = user_database.get(logged_in_user)
+
+                    elif option == '6':
+
                         if isinstance(user_instance, RenterClass):
 
                             accommodation_instance = AccommodationClass()
                             accommodation_instance.viewAccommodations()
 
-                            user_instance = user_database.get(logged_in_user)
                             user_instance.requestAccommodation()
                         else:
                             print("User not found.")
 
-                    elif option == "6":
-                        user_instance = user_database.get(logged_in_user)
+                    elif option == "7":
+
                         if user_instance:
                             user_instance.update_user_profile()
                         else:
                             print("User not found.")
 
-                    elif option == "7":
+                    elif option == "8":
                         break
 
                     else:
@@ -329,6 +338,9 @@ if __name__ == "__main__":
     accommodation_instance.publish("House 34b", "Köln", 34, "apartment", 10, 1, 3, "None", "None")
     accommodation_instance.publish("House 33b", "Central Münich", 125, "apartment", 15, 1, 7, "None", "None")
     accommodation_instance.publish("Room 311a", "Stockholm", 34, "apartment", 10, 1, 2, "None", "None")
+    accommodation_instance.publish("Test", "Yep", 34, "apartment", 10, 1, 3, "None", "None")
+    accommodation_instance.publish("Wardrobe", "Nopp", 125, "apartment", 15, 1, 7, "None", "None")
+    accommodation_instance.publish("Chair", "TEST", 34, "apartment", 10, 1, 2, "None", "None")
     main_menu()
 
 
