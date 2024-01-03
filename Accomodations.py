@@ -1,4 +1,4 @@
-
+import time
 
 class AccommodationClass:
 
@@ -19,7 +19,7 @@ class AccommodationClass:
         """
 
         self.name = name.lower()
-        self.AccommodationID = AccommodationClass.totalAccommodations + 1
+        self.AccommodationID = name + str(AccommodationClass.totalAccommodations + 1)
         self.host_id = host
         self.location = location
         self.size = size
@@ -64,6 +64,7 @@ class AccommodationClass:
         print("Availability weeks: " + self.find_availability(name, accommodation)[:-2])
 
     def find_availability(self, name, accommodation=None):
+        """ Finds the weeks an accommodation is available. If not, it returns a string that says so. """
         if accommodation == None:
             accommodation = self.findAccommodation(name)
         availability_weeks = ""
@@ -75,6 +76,7 @@ class AccommodationClass:
         return availability_weeks
 
     def set_availability(self, name, weeks):
+        """ Sets the availability of an accomodation, and changes it accordingly in the list. """
         name = name.lower()
         Accomodation = self.findAccommodation(name)
         try:
@@ -92,6 +94,7 @@ class AccommodationClass:
                     Accomodation[name]["Availability"][week] = False
 
     def findAccommodation(self, name):
+        """ Searches for an accomodation with the name """
         for accommodation in AccommodationClass.allAccommodations:
             if name.lower() in accommodation:
                 return accommodation
@@ -161,14 +164,17 @@ def Main():
     print(accommodation_instance.totalAccommodations)
     accommodation_instance.publish("Room 311a", "Stockholm", 34, "apartment", 10, 1, 2, "None", "45-50", "None")
     print(accommodation_instance.totalAccommodations)
-    # accommodation_instance.viewAccommodations()
-    # #accommodation_instance.editAccommodation("House 33b")
-    # accommodation_instance.displayInformation(accommodation_instance.findAccommodation("House 33b"), "House 33b")
-    # accommodation_instance.viewAccommodations()
-    # print()
-    # accommodation_instance.removeAccommodation("House 34b")
-    # accommodation_instance.viewAccommodations()
-    # print(accommodation_instance.totalAccommodations)
+    print("We have published a few accommodations.")
+    time.sleep(3)
+
+    accommodation_instance.viewAccommodations()
+    accommodation_instance.editAccommodation("House 33b")
+    accommodation_instance.displayInformation(accommodation_instance.findAccommodation("House 33b"), "House 33b")
+    accommodation_instance.viewAccommodations()
+    print()
+    accommodation_instance.removeAccommodation("House 34b")
+    accommodation_instance.viewAccommodations()
+    print(accommodation_instance.totalAccommodations)
     accommodation_instance.displayInformation(accommodation_instance.findAccommodation("Room 311a"), "Room 311a")
     accommodation_instance.book_accomodation("Room 311a", "45-47")
     accommodation_instance.displayInformation(accommodation_instance.findAccommodation("Room 311a"), "Room 311a")
