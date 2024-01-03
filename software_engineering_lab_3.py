@@ -120,7 +120,7 @@ def handle_accommodation(name):
 def upload_accommodation():
     title = input("Title of the accommodation: ")
     location = input("Location of the accommodation: ")
-    size = input("Size in sqm: ")
+    size = input("Size in kvm: ")
     accommodations.append({"title": title, "location": location, "size": size})
     print("Accommodation added!")
 
