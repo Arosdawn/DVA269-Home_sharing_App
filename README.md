@@ -1,4 +1,5 @@
 # DVA269-Home_sharing_App
+FINALSOURCECODE IS THE FINISHED PRODUCT
 Group 4 Home Sharing App
 
 We start with accomodations: We made it possible to publish and edit your accomodations that a host would want to share
