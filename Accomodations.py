@@ -36,7 +36,7 @@ class AccommodationClass:
             {self.name: {
                 "Name"              : self.name,
                 "AccommodationID"   : self.AccommodationID,
-                "Host ID"           : self.host_id,
+                "Host_ID"           : self.host_id,
                 "Location"          : self.location,
                 "Size"              : self.size,
                 "Accomodation Type" : self.AccommodationType,
@@ -52,6 +52,24 @@ class AccommodationClass:
             self.availability = self.set_availability(self.name, str(availability))
 
 
+    def add_accomodation(self, host):
+        while True:
+            try:
+                name        = input("Property Name > ")
+                location    = input("Property Location (city) > ")
+                size        = int(input("Property Size (in sqm) > "))
+                acc_type    = input("Property Type (villa, appartment, etc) > ")
+                price       = int(input("Property Price (per week) > "))
+                floor       = int(input("Property Floor (appartment floor, or total floors of house) > "))
+                rooms       = int(input("Number of rooms of Accomodation > "))
+                features    = input("Any special features? > ")
+                avail       = input("What weeks do you want it available? Leave blank if you"
+                                    " want to decide later. ex: (20-22) > ")
+                return self.publish(name, location, size, acc_type, price, floor, rooms, features, avail, host)
+            except TypeError:
+                print("Nono. Some of these require numbers: Size, Price, Floor, and Rooms.")
+
+
     def displayInformation(self, accommodation, name):
         """ Prints out all necessary information about an accommodation """
         name = name.lower()
@@ -63,13 +81,13 @@ class AccommodationClass:
         print("Features: " + accommodation[name]["Features"])
         print("Availability weeks: " + self.find_availability(name, accommodation)[:-2])
 
-    def find_availability(self, name, accommodation=None):
+    def find_availability(self, name, method=False, accommodation=None):
         """ Finds the weeks an accommodation is available. If not, it returns a string that says so. """
         if accommodation == None:
             accommodation = self.findAccommodation(name)
         availability_weeks = ""
         for index, available in enumerate(accommodation[name]['Availability']):
-            if accommodation[name]['Availability'][index] == False:
+            if accommodation[name]['Availability'][index] == method:
                 availability_weeks += f"{index}, "
         if availability_weeks == '':
             return "No Available Dates"
@@ -147,7 +165,15 @@ class AccommodationClass:
         else:
             print("This accommodation does not exist.")
 
-    def viewAccommodations(self):
+    def viewAccommodations(self, host=False):
+        if host:
+            method = True
+            print("These are your properties")
+            for accommodation in AccommodationClass.allAccommodations:
+                for title, details in accommodation.items():
+                    if details["Host_ID"] == host:
+                        print(f"{title}: {details['Location']}. "
+                              f"Booked: {self.find_availability(title, method, accommodation)}")
         for accommodation in AccommodationClass.allAccommodations:
             for title, details in accommodation.items():
                 if details["Rented"] == True:
@@ -155,10 +181,10 @@ class AccommodationClass:
                 print(f"{title}: {details['Location']}, ", end="")
             print()
 
-    def removeAccommodation(self, name):
+    def removeAccommodation(self, name, host):
         name = name.lower()
         for index, accommodation in enumerate(AccommodationClass.allAccommodations):
-            if name in accommodation:
+            if name in accommodation and host == accommodation[name]["Host_ID"]:
                 del AccommodationClass.allAccommodations[index]
                 AccommodationClass.totalAccommodations -= 1
                 return
